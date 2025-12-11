@@ -95,6 +95,21 @@ export const GenerationView = ({
     };
   };
 
+  const getApiRequestData = () => {
+    const payload = getPayload();
+    return {
+      url: "https://api.loreal-eureka.internal/v1/content/generate",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eu_sk_live_839218209321",
+        "X-Tenant-ID": brand.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+        "X-Request-ID": `req_${Date.now()}`
+      },
+      body: payload
+    };
+  };
+
   const executeGeneration = async (promptText: string, isRefine: boolean) => {
     setLoading(true);
     const previousVersion = activeResultIdx >= 0 ? results[activeResultIdx].version : 0;
@@ -308,7 +323,7 @@ export const GenerationView = ({
   return (
     <div className="flex h-full bg-eureka-dark">
       <AudienceSelectionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} audienceData={audienceData} selectedTags={knowledgeTags} onConfirm={setKnowledgeTags} />
-      <CodeViewer isOpen={showApiDebug} onClose={() => setShowApiDebug(false)} data={getPayload()} />
+      <CodeViewer isOpen={showApiDebug} onClose={() => setShowApiDebug(false)} data={getApiRequestData()} />
 
       {/* Left Panel */}
       <div className="w-[450px] flex-none border-r border-eureka-border bg-[#0F1623]/80 flex flex-col h-full">

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { X, ChevronDown, Check, Code } from 'lucide-react';
+import { X, ChevronDown, Check, Code, Globe, Hash } from 'lucide-react';
 
 interface BadgeProps {
   children: React.ReactNode;
@@ -107,22 +107,68 @@ export const TechSwitch = ({ checked, onChange, label, subLabel }: { checked: bo
 
 export const CodeViewer = ({ isOpen, onClose, data }: { isOpen: boolean, onClose: () => void, data: any }) => {
   if (!isOpen) return null;
+  
+  const isApiRequest = data?.method && data?.url && data?.headers;
+
   return (
     <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="w-full max-w-2xl bg-[#0F1623] border border-eureka-border rounded-xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
+      <div className="w-full max-w-3xl bg-[#0F1623] border border-eureka-border rounded-xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
         <div className="h-12 px-5 border-b border-eureka-border flex items-center justify-between bg-eureka-panel/50">
           <div className="flex items-center gap-2 text-white font-medium text-sm font-mono">
-            <Code size={16} className="text-eureka-accent" /> API Payload Debugger
+            <Code size={16} className="text-eureka-accent" /> API Request Debugger
           </div>
           <button onClick={onClose} className="text-slate-400 hover:text-white"><X size={18} /></button>
         </div>
-        <div className="flex-1 overflow-auto p-0">
-          <pre className="p-4 text-[11px] font-mono text-indigo-200 bg-[#0B0F19] leading-relaxed">
-            {JSON.stringify(data, null, 2)}
-          </pre>
+        
+        <div className="flex-1 overflow-auto p-0 custom-scrollbar">
+          {isApiRequest ? (
+            <div className="p-6 space-y-6">
+              {/* Endpoint Section */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                   <Globe size={12}/> Endpoint
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-black/40 border border-white/5 rounded-lg font-mono text-xs">
+                   <span className="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded border border-emerald-500/30 font-bold">{data.method}</span>
+                   <span className="text-slate-300 break-all">{data.url}</span>
+                </div>
+              </div>
+
+              {/* Headers Section */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                   <Hash size={12}/> Headers
+                </div>
+                <div className="bg-[#0B0F19] border border-white/5 rounded-lg p-3">
+                   {Object.entries(data.headers).map(([k, v]) => (
+                     <div key={k} className="flex gap-4 font-mono text-[10px] py-1 border-b border-white/5 last:border-0">
+                        <span className="text-indigo-300 w-32 shrink-0 text-right">{k}:</span>
+                        <span className="text-slate-400 break-all">{String(v)}</span>
+                     </div>
+                   ))}
+                </div>
+              </div>
+
+              {/* Body Section */}
+              <div className="space-y-2 flex-1">
+                <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                   <Code size={12}/> Request Body (JSON)
+                </div>
+                <pre className="p-4 text-[11px] font-mono text-indigo-200 bg-[#0B0F19] border border-white/5 rounded-lg leading-relaxed overflow-x-auto">
+                  {JSON.stringify(data.body, null, 2)}
+                </pre>
+              </div>
+            </div>
+          ) : (
+            <pre className="p-4 text-[11px] font-mono text-indigo-200 bg-[#0B0F19] leading-relaxed">
+              {JSON.stringify(data, null, 2)}
+            </pre>
+          )}
         </div>
-        <div className="p-4 border-t border-eureka-border bg-eureka-panel/30 flex justify-end">
-           <button onClick={onClose} className="px-4 py-1.5 rounded bg-slate-700 text-white text-xs font-bold hover:bg-slate-600">Close</button>
+        
+        <div className="p-4 border-t border-eureka-border bg-eureka-panel/30 flex justify-end gap-3">
+           <button className="px-4 py-1.5 rounded bg-slate-800 border border-slate-700 text-slate-300 text-xs font-bold hover:text-white hover:border-slate-500 transition-colors">Copy CURL</button>
+           <button onClick={onClose} className="px-4 py-1.5 rounded bg-eureka-primary text-white text-xs font-bold hover:bg-eureka-primary/90">Close Debugger</button>
         </div>
       </div>
     </div>

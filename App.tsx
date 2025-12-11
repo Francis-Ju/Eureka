@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Globe, Settings, LogOut } from 'lucide-react';
 import { Language, ModuleType, AudienceData, User } from './types';
@@ -8,6 +7,8 @@ import { LoginView } from './components/LoginView';
 import { GenerationView } from './components/GenerationView';
 import { KnowledgeView } from './components/KnowledgeView';
 import { AnalysisView } from './components/AnalysisView';
+import { DiagnosisView } from './components/DiagnosisView';
+import { ManagementView } from './components/ManagementView'; // Imported
 
 const App = () => {
   // Auth State
@@ -49,12 +50,8 @@ const App = () => {
           {module === 'generation' && <GenerationView lang={lang} audienceData={audienceData} prefilledMimicry={mimicry} setPrefilledMimicry={setMimicry} currentUser={user} />}
           {module === 'knowledge' && <KnowledgeView audienceData={audienceData} />}
           {module === 'analysis' && <AnalysisView onUseTrend={(t) => { setMimicry(t); setModule('generation'); }} />}
-          {['diagnosis', 'management'].includes(module) && (
-            <div className="flex flex-col items-center justify-center h-full text-slate-500">
-               <Settings size={48} className="mb-4 opacity-20" />
-               <p className="uppercase tracking-widest text-xs">Module Under Construction</p>
-            </div>
-          )}
+          {module === 'diagnosis' && <DiagnosisView />}
+          {module === 'management' && <ManagementView tenant={user.brand} />}
         </main>
       </div>
     </div>
