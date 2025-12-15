@@ -15,6 +15,25 @@ const UserManagementTab = ({ tenantName }: { tenantName: string }) => {
     u.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleDeleteUser = (id: string) => {
+    if (confirm('Are you sure you want to delete this user?')) {
+      setUsers(prev => prev.filter(u => u.id !== id));
+    }
+  };
+
+  const handleAddUser = () => {
+    const newUser: ManagedUser = {
+      id: `u_${Date.now()}`,
+      name: `New User ${users.length + 1}`,
+      email: `user${users.length + 1}@loreal.com`,
+      roleId: 'writer',
+      status: 'active',
+      lastLogin: 'Never',
+      avatar: 'NU'
+    };
+    setUsers(prev => [...prev, newUser]);
+  };
+
   return (
     <div className="flex-1 flex flex-col h-full">
       {/* Toolbar */}
@@ -28,7 +47,10 @@ const UserManagementTab = ({ tenantName }: { tenantName: string }) => {
           />
           <Search size={14} className="absolute left-3 top-2.5 text-slate-500" />
         </div>
-        <button className="px-4 py-2 bg-eureka-primary hover:bg-eureka-primary/90 text-white text-xs font-bold rounded-lg flex items-center gap-2 transition-all">
+        <button 
+          onClick={handleAddUser}
+          className="px-4 py-2 bg-eureka-primary hover:bg-eureka-primary/90 text-white text-xs font-bold rounded-lg flex items-center gap-2 transition-all shadow-lg hover:shadow-indigo-500/20"
+        >
            <Plus size={14} /> Add User
         </button>
       </div>
@@ -46,44 +68,56 @@ const UserManagementTab = ({ tenantName }: { tenantName: string }) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
-            {filteredUsers.map(user => {
-               const roleName = MOCK_ROLES.find(r => r.id === user.roleId)?.name || user.roleId;
-               return (
-                <tr key={user.id} className="hover:bg-white/5 transition-colors group">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-white border border-slate-500">
-                        {user.avatar}
+            {filteredUsers.length === 0 ? (
+               <tr>
+                 <td colSpan={5} className="px-6 py-8 text-center text-slate-500 text-sm">No users found.</td>
+               </tr>
+            ) : (
+              filteredUsers.map(user => {
+                 const roleName = MOCK_ROLES.find(r => r.id === user.roleId)?.name || user.roleId;
+                 return (
+                  <tr key={user.id} className="hover:bg-white/5 transition-colors group">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-white border border-slate-500">
+                          {user.avatar}
+                        </div>
+                        <div>
+                          <div className="text-sm font-bold text-white">{user.name}</div>
+                          <div className="text-xs text-slate-500">{user.email}</div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="text-sm font-bold text-white">{user.name}</div>
-                        <div className="text-xs text-slate-500">{user.email}</div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="px-2 py-1 rounded bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium">
+                        {roleName}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`flex items-center gap-1.5 text-xs font-medium ${user.status === 'active' ? 'text-emerald-400' : 'text-slate-500'}`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${user.status === 'active' ? 'bg-emerald-500' : 'bg-slate-500'}`}></span>
+                        {user.status === 'active' ? 'Active' : 'Inactive'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-xs text-slate-400 font-mono">
+                      {user.lastLogin}
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button className="p-1.5 rounded hover:bg-white/10 text-slate-400 hover:text-white" title="Edit"><Edit3 size={14} /></button>
+                        <button 
+                          onClick={() => handleDeleteUser(user.id)}
+                          className="p-1.5 rounded hover:bg-white/10 text-slate-400 hover:text-red-400 transition-colors" 
+                          title="Delete"
+                        >
+                          <Trash2 size={14} />
+                        </button>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="px-2 py-1 rounded bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium">
-                      {roleName}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`flex items-center gap-1.5 text-xs font-medium ${user.status === 'active' ? 'text-emerald-400' : 'text-slate-500'}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${user.status === 'active' ? 'bg-emerald-500' : 'bg-slate-500'}`}></span>
-                      {user.status === 'active' ? 'Active' : 'Inactive'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-xs text-slate-400 font-mono">
-                    {user.lastLogin}
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-1.5 rounded hover:bg-white/10 text-slate-400 hover:text-white" title="Edit"><Edit3 size={14} /></button>
-                      <button className="p-1.5 rounded hover:bg-white/10 text-slate-400 hover:text-red-400" title="Delete"><Trash2 size={14} /></button>
-                    </div>
-                  </td>
-                </tr>
-               );
-            })}
+                    </td>
+                  </tr>
+                 );
+              })
+            )}
           </tbody>
         </table>
       </div>
@@ -110,7 +144,7 @@ const RoleManagementTab = () => {
     }));
   };
 
-  const categories = Array.from(new Set(ALL_PERMISSIONS.map(p => p.category)));
+  const categories = Array.from(new Set(ALL_PERMISSIONS.map(p => p.category))) as string[];
 
   return (
     <div className="flex h-full gap-6">

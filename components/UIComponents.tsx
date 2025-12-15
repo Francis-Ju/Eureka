@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { X, ChevronDown, Check, Code, Globe, Hash } from 'lucide-react';
 
@@ -90,7 +89,7 @@ export const RadioCard = ({ selected, onClick, icon: Icon, label, color = "indig
   );
 };
 
-export const TechSwitch = ({ checked, onChange, label, subLabel }: { checked: boolean, onChange: (v: boolean) => void, label: string, subLabel?: string }) => (
+export const TechSwitch: React.FC<{ checked: boolean, onChange: (v: boolean) => void, label: string, subLabel?: string }> = ({ checked, onChange, label, subLabel }) => (
   <div 
     onClick={() => onChange(!checked)}
     className={`flex items-start gap-3 p-2 rounded-lg cursor-pointer border transition-all hover:bg-white/5 ${checked ? 'border-eureka-primary/30 bg-eureka-primary/5' : 'border-transparent'}`}

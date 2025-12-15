@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Hexagon, ArrowRight } from 'lucide-react';
 import { BRANDS } from '../constants';
@@ -18,7 +17,7 @@ export const LoginView = ({ onLogin }: { onLogin: (user: User) => void }) => {
         username,
         brand: selectedBrand,
         role: 'Marketing Manager',
-        avatar: 'JD'
+        avatar: username.slice(0, 2).toUpperCase()
       });
       setLoading(false);
     }, 800);

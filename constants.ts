@@ -1,54 +1,85 @@
-import { AudienceData, TrendCategory, DiagnosisMetric, ChartDataPoint, Role, ManagedUser, PermissionNode } from './types';
+import { AudienceData, TrendCategory, DiagnosisKPI, DiagnosisChannelData, FAQItem, ModelHealthMetric, Role, ManagedUser, PermissionNode, FileItem, ServiceRecord, ChatRecord, TagCategory } from './types';
 
 export const BRANDS = ["L'Oréal Paris", "Lancôme", "YSL Beauty", "Kiehl's", "La Roche-Posay", "SkinCeuticals"];
 
+// Audience Library Data (Translated to Chinese)
 export const INITIAL_AUDIENCE_DATA: AudienceData = {
   crm: [
-    { id: 'membership', name: 'Membership Tier', tags: ['General Member', 'Silver Card', 'Gold Card', 'Platinum Card'] },
-    { id: 'lifecycle', name: 'User Lifecycle', tags: ['New Customer', 'Active VIP', 'Dormant (30+ days)', 'Churn Risk'] },
-    { id: 'demographics', name: 'Demographics', tags: ['Gen Z (18-25)', 'Young Professional (26-35)', 'Mature (36+)', 'Tier 1 City'] },
-    { id: 'spending', name: 'Spending Power', tags: ['High Spender', 'Promotion Sensitive', 'Luxury Buyer'] }
+    { id: 'membership', name: '会员等级', tags: ['普通会员', '银卡会员', '金卡会员', '白金会员'] },
+    { id: 'lifecycle', name: '用户生命周期', tags: ['新客', '活跃VIP', '沉睡(30天+)', '流失风险'] },
+    { id: 'demographics', name: '人口统计', tags: ['Z世代 (18-25)', '精致白领 (26-35)', '熟龄肌 (36+)', '一线城市'] },
+    { id: 'spending', name: '消费力', tags: ['高消费力', '价格敏感', '奢华买家'] }
   ],
   wecom: [
-    { id: 'skin', name: 'Skin Type', tags: ['Normal Skin', 'Dry Skin', 'Oily Skin', 'Combination Skin', 'Sensitive Skin'] },
-    { id: 'role', name: 'Occupation', tags: ['Student', 'Office Worker', 'Freelancer', 'Mom'] },
-    { id: 'concerns', name: 'Skin Concerns', tags: ['Acne', 'Wrinkles', 'Dullness', 'Dehydration'] }
+    { id: 'skin', name: '肤质', tags: ['中性肌', '干皮', '油皮', '混合肌', '敏感肌'] },
+    { id: 'role', name: '职业', tags: ['学生党', '上班族', '自由职业', '宝妈'] },
+    { id: 'concerns', name: '肌肤困扰', tags: ['痘痘肌', '抗老淡纹', '暗沉提亮', '屏障修护'] }
   ]
 };
 
+export const CONSUMER_PREFERENCES: TagCategory[] = [
+  { id: 'prod_pref', name: 'Product Preferences', tags: ['Natural Ingredients', 'High Efficacy', 'Fragrance-free', 'Sustainable Packaging'] },
+  { id: 'channel_pref', name: 'Channel Preferences', tags: ['Online Consultation', 'Offline Experience', 'Live Stream Shopping'] },
+  { id: 'content_pref', name: 'Content Preferences', tags: ['Scientific Proof', 'Influencer Reviews', 'Tutorial Videos', 'Before/After'] }
+];
+
+export const MOCK_SERVICE_HISTORY: ServiceRecord[] = [
+  { id: 's1', customerName: 'Alice Wang', date: '2023-10-25', type: 'Skin Consultation', summary: 'Recommended Revitalift series for fine lines.', status: 'Completed' },
+  { id: 's2', customerName: 'Bob Chen', date: '2023-11-02', type: 'After-sales', summary: 'Inquired about usage order of serums.', status: 'Completed' },
+  { id: 's3', customerName: 'Carol Zhang', date: '2023-11-05', type: 'Complaint', summary: 'Shipping delay feedback.', status: 'Pending' },
+];
+
+export const MOCK_CHAT_HISTORY: ChatRecord[] = [
+  { id: 'c1', customerName: 'Alice Wang', date: '2023-10-25 14:30', topic: 'Product Inquiry', snippet: 'Is the purple eye cream suitable for sensitive skin?', channel: 'WeCom' },
+  { id: 'c2', customerName: 'David Liu', date: '2023-11-01 09:15', topic: 'Promotion', snippet: 'When does the Double 11 presale start?', channel: 'Tmall' },
+];
+
+// Knowledge Base Data
 export const KB_FOLDERS = [
-  "Brand Guidelines 2025",
-  "Campaign Assets Q1",
-  "Scientific Communication",
-  "KOL Briefs"
+  "2025 品牌视觉规范 (Brand Guidelines)",
+  "Q1 营销活动资产 (Campaign Assets)",
+  "科学传播资料 (Scientific Comm)",
+  "KOL 投放简报 (Briefs)"
+];
+
+export const BRAND_KB_FILES: FileItem[] = [
+  { id: 'f1', name: 'Brand_Values_2025.pdf', type: 'pdf', size: '2.4 MB', date: '2023-10-01' },
+  { id: 'f2', name: 'Logo_Pack_HighRes.zip', type: 'folder', size: '150 MB', date: '2023-09-15' },
+  { id: 'f3', name: 'Brand_Story_Deck.pptx', type: 'folder', size: '12 MB', date: '2023-10-10' },
+];
+
+export const PRODUCT_KB_FILES: FileItem[] = [
+  { id: 'pf1', name: 'Revitalift_Ingredients.pdf', type: 'pdf', size: '5.1 MB', date: '2023-10-05' },
+  { id: 'pf2', name: 'Training_Video_Series', type: 'folder', size: '450 MB', date: '2023-10-20' },
+  { id: 'pf3', name: 'FAQ_Sensitive_Skin.docx', type: 'docx', size: '1.2 MB', date: '2023-11-01' },
 ];
 
 export const MOCK_PRODUCTS = [
   { 
     id: 'p1', 
-    name: 'Revitalift Filler Eye Cream (Purple Iron)', 
+    name: '紫熨斗全脸眼霜 (Revitalift Filler Eye Cream)', 
     data: {
-      ingredients: 'Pro-Xylane Pro + Hyaluronic Acid',
-      benefits: 'Fade Lines + Plump & Moisturize',
-      usage: 'Massage around eyes + nasolabial folds'
+      ingredients: '玻色因PRO + 玻尿酸 (Pro-Xylane + HA)',
+      benefits: '淡纹 + 充盈 + 保湿',
+      usage: '眼周按摩 + 法令纹提拉'
     }
   },
   { 
     id: 'p2', 
-    name: 'Youth Code Serum', 
+    name: '青春密码黑精华 (Youth Code Serum)', 
     data: {
-      ingredients: 'Bifida Ferment Lysate + Papain',
-      benefits: 'Strengthen Barrier + Boost Absorption',
-      usage: 'Use after cleansing, before toner'
+      ingredients: '二裂酵母 + 酵素 (Bifida + Papain)',
+      benefits: '强韧屏障 + 促进吸收',
+      usage: '洁面后爽肤水前使用'
     }
   },
   { 
     id: 'p3', 
-    name: 'Glycolic Bright Serum', 
+    name: '注光水乳 (Glycolic Bright)', 
     data: {
-      ingredients: 'Glycolic Acid + Niacinamide',
-      benefits: 'Instant Glow + Reduce Dark Spots',
-      usage: 'Daily morning/night usage'
+      ingredients: '乙醇酸 + 烟酰胺 (Glycolic + Niacinamide)',
+      benefits: '即刻焕亮 + 减少暗沉',
+      usage: '早晚日常使用'
     }
   }
 ];
@@ -159,136 +190,87 @@ export const MOCK_TRENDS_DATA: TrendCategory[] = [
   },
   {
     id: 't5',
-    hashtag: '#营销与内容形式',
-    category: '营销与内容形式',
-    description: '该技术领域属于内容策略，包含 23 个创新事件',
-    count: 23,
+    hashtag: '#可持续与纯净美妆',
+    category: '可持续与纯净美妆',
+    description: '该技术领域属于社会责任，包含 21 个创新事件',
+    count: 21,
     items: [
-      { id: 'i1', rank: 1, title: '中长视频深度教程', description: '通过3-5分钟的视频，详细讲解产品成分、上妆手法和解决特定问题，适合在私域社群传播。', date: '2025/11/18', heat: 85, region: '中国', sourceCount: 10, details: COMMON_DETAILS },
-      { id: 'i2', rank: 2, title: '“科学种草”与成分叙事', description: '用通俗语言解读复杂成分（如多肽、稀有植萃）的作用机理，建立品牌可信度。', date: '2025/11/16', heat: 62, region: '全球', sourceCount: 7, details: COMMON_DETAILS },
-      { id: 'i3', rank: 3, title: '“沉浸式”产品体验与开箱', description: '通过ASMR、Room Tour等形式，展示产品质感、使用场景，营造高端、治愈的氛围。', date: '2025/11/20', heat: 35, region: '欧美', sourceCount: 4, details: COMMON_DETAILS },
-      { id: 'i4', rank: 4, title: '溯源与品牌故事短剧', description: '以微短剧或纪录片形式，讲述成分发现、研发故事或工艺传承，赋予品牌深厚情感价值。', date: '2025/11/19', heat: 30, region: '中国', sourceCount: 3, details: COMMON_DETAILS },
-      { id: 'i5', rank: 5, title: 'AIGC生成个性化内容', description: '利用AI技术，根据客户肤质、场景快速生成定制化护肤或妆容建议，展现科技感与服务前瞻性。', date: '2025/11/17', heat: 25, region: '全球', sourceCount: 6, details: COMMON_DETAILS }
-    ]
-  },
-  {
-    id: 't6',
-    hashtag: '#场景与生活方式',
-    category: '场景与生活方式',
-    description: '该技术领域属于场景营销，包含 7 个创新事件',
-    count: 7,
-    items: [
-      { id: 'i1', rank: 1, title: '“碎片化变美”场景方案', description: '为通勤、差旅、午间补妆等场景，推荐便捷、多效合一的产品（如气垫、综合盘），解决具体痛点。', date: '2025/11/19', heat: 77, region: '全球', sourceCount: 5, details: COMMON_DETAILS },
-      { id: 'i2', rank: 2, title: '“高感沉浸”式体验', description: '打造沙龙护肤、家居SPA、DIY调香等内容，将产品融入高端生活仪式，强化品牌质感与客户粘性。', date: '2025/11/17', heat: 65, region: '中国', sourceCount: 4, details: COMMON_DETAILS },
-      { id: 'i3', rank: 3, title: '“共美无间”关系建设', description: '策划闺蜜礼盒、情侣香氛、亲子护肤话题，将美妆作为情感纽带，拓展送礼和共同消费场景。', date: '2025/11/18', heat: 58, region: '亚太', sourceCount: 3, details: COMMON_DETAILS },
-      { id: 'i4', rank: 4, title: '“自我仪式”疗愈时刻', description: '围绕夜间修护、周末焕肤等自我关爱仪式，推荐全套产品组合，提升客单价与客户忠诚度。', date: '2025/11/20', heat: 42, region: '欧美', sourceCount: 2, details: COMMON_DETAILS },
-      { id: 'i5', rank: 5, title: '季节性护肤与香氛切换', description: '根据季节变化，提供护肤品更替、香调推荐（如秋冬木质调）的专业建议，体现持续关怀。', date: '2025/11/15', heat: 36, region: '全球', sourceCount: 3, details: COMMON_DETAILS }
+      { id: 'i1', rank: 1, title: '可替换包装（Refillable）', description: '推广环保替换芯，强调减少塑料浪费，建立品牌环保形象，吸引有责任感的消费者。', date: '2025/11/19', heat: 85, region: '欧美', sourceCount: 10, details: COMMON_DETAILS },
+      { id: 'i2', rank: 2, title: '纯净成分（Clean Beauty）', description: '强调无毒、无害、天然成分，符合健康生活方式趋势。', date: '2025/11/18', heat: 79, region: '全球', sourceCount: 8, details: COMMON_DETAILS },
+      { id: 'i3', rank: 3, title: '零残忍认证', description: '宣传产品未进行动物测试，吸引关注动物权益的年轻消费群体。', date: '2025/11/20', heat: 60, region: '欧美', sourceCount: 6, details: COMMON_DETAILS }
     ]
   }
 ];
 
-export const DICTIONARY = {
+export const DICTIONARY: Record<string, any> = {
   zh: {
-    appName: "L'Oréal Eureka",
-    nav: { generation: "智能创作", knowledge: "知识中枢", diagnosis: "全域诊断", analysis: "选题分析", management: "系统配置" },
-    gen: {
-      title: "智能文案创作",
-      sections: { brand: "品牌基因", strategy: "内容策略", audience: "动态人群", kb: "知识库调用", config: "生成配置" },
-      fields: { 
-        brand: "所属品牌", baPersona: "BA 属性", scenario: "沟通场景", style: "沟通风格", 
-        mimicry: "AI 风格仿写", sellingPoints: "核心卖点", 
-        knowledgeSelector: "点击选择 CRM / 企微标签...",
-        kbFolder: "品牌资产文件夹", kbProduct: "关联产品",
-        length: "篇幅", extras: "附加元素", compliance: "合规与边界"
-      },
-      actions: { generate: "立即生成", generating: "Eureka 运算中...", refine: "迭代优化", debug: "API 调试" },
-      placeholders: {
-        customTag: "自定义标签 (回车添加)...",
-        sellingPoints: "输入产品功效、活动机制或营销主题...",
-        mimicry: "粘贴优秀话术让 AI 模仿风格...",
-        refine: "输入修改意见 (如: 更活泼一点)..."
-      }
+    nav: {
+      generation: '内容生成 (Generation)',
+      knowledge: '知识库 (Knowledge)',
+      analysis: '趋势洞察 (Analysis)',
+      diagnosis: '效果诊断 (Diagnosis)',
+      management: '系统管理 (Management)'
     }
   },
   en: {
-    appName: "L'Oréal Eureka",
-    nav: { generation: "Eureka Create", knowledge: "Knowledge Base", diagnosis: "Diagnosis", analysis: "Trend Analysis", management: "Settings" },
-    gen: {
-      title: "Smart Copywriting",
-      sections: { brand: "Brand DNA", strategy: "Content Strategy", audience: "Dynamic Audience", kb: "Knowledge Base", config: "Config" },
-      fields: { 
-        brand: "Brand", baPersona: "BA Persona", scenario: "Scenario", style: "Style", 
-        mimicry: "AI Style Mimicry", sellingPoints: "Core Selling Points", 
-        knowledgeSelector: "Select CRM / WeCom tags...",
-        kbFolder: "Asset Folder", kbProduct: "Link Product",
-        length: "Length", extras: "Extras", compliance: "Compliance"
-      },
-      actions: { generate: "Generate", generating: "Processing...", refine: "Refine", debug: "Debug API" },
-      placeholders: {
-        customTag: "Custom tags (Enter to add)...",
-        sellingPoints: "Enter benefits, campaign theme...",
-        mimicry: "Paste text to mimic style...",
-        refine: "Enter feedback..."
-      }
+    nav: {
+      generation: 'Generation',
+      knowledge: 'Knowledge Base',
+      analysis: 'Trend Analysis',
+      diagnosis: 'Diagnosis',
+      management: 'Management'
     }
   }
 };
 
-// Diagnosis Mock Data
-export const MOCK_DIAGNOSIS_DATA = {
-  metrics: [
-    { label: "Token 总调用量", value: "852,490", change: 12.5, trend: "up" },
-    { label: "Token 余额", value: "147,510", change: -5.2, trend: "down" },
-    { label: "累计生成文案", value: "3,450", change: 8.4, trend: "up" },
-    { label: "活跃 BA 数量", value: "892", change: 2.1, trend: "up" },
-  ] as DiagnosisMetric[],
-  
-  genChart: [
-    { label: "Mon", valueA: 45, valueB: 30 },
-    { label: "Tue", valueA: 52, valueB: 35 },
-    { label: "Wed", valueA: 49, valueB: 42 },
-    { label: "Thu", valueA: 62, valueB: 45 },
-    { label: "Fri", valueA: 78, valueB: 50 },
-    { label: "Sat", valueA: 85, valueB: 65 },
-    { label: "Sun", valueA: 60, valueB: 40 },
-  ] as ChartDataPoint[], // A: WeCom, B: RedBook
-
-  topRegions: [
-    { name: "Shanghai", value: 92 },
-    { name: "Beijing", value: 85 },
-    { name: "Chengdu", value: 78 },
-    { name: "Guangzhou", value: 72 },
-    { name: "Hangzhou", value: 65 },
-  ],
-
-  interaction: [
-    { label: "私域消息点击率", value: "18.5%", change: 1.2, trend: "up" },
-    { label: "文案收藏率", value: "8.2%", change: 0.5, trend: "up" },
-    { label: "内容采用率", value: "65%", change: 3.1, trend: "up" },
-    { label: "平均迭代次数", value: "1.4", change: -0.2, trend: "down" } // Lower is better
-  ]
-};
-
-// Management Mock Data
-export const ALL_PERMISSIONS: PermissionNode[] = [
-  { id: 'gen_write', label: 'Create Content', category: 'Generation' },
-  { id: 'gen_read', label: 'View History', category: 'Generation' },
-  { id: 'kb_write', label: 'Manage Assets', category: 'Knowledge' },
-  { id: 'kb_read', label: 'View Knowledge Base', category: 'Knowledge' },
-  { id: 'dia_view', label: 'View Diagnosis', category: 'Diagnosis' },
-  { id: 'ana_view', label: 'View Trends', category: 'Analysis' },
-  { id: 'sys_manage', label: 'Manage Users/Roles', category: 'System' },
+export const DIAGNOSIS_KPIS: DiagnosisKPI[] = [
+  { id: 'k1', label: '点击率 (CTR)', value: '4.8%', trend: '+0.5%', trendDirection: 'up', iconType: 'click' },
+  { id: 'k2', label: '转化率 (CVR)', value: '2.1%', trend: '+0.2%', trendDirection: 'up', iconType: 'conversion' },
+  { id: 'k3', label: '用户满意度', value: '4.9', trend: 'Flat', trendDirection: 'up', iconType: 'like' },
+  { id: 'k4', label: '平均响应时间', value: '1.2s', trend: '-0.3s', trendDirection: 'up', iconType: 'time' }
 ];
 
-export const MOCK_ROLES: Role[] = [
-  { id: 'admin', name: 'Brand Admin', description: 'Full access to tenant configuration and users', permissions: ['gen_write', 'gen_read', 'kb_write', 'kb_read', 'dia_view', 'ana_view', 'sys_manage'] },
-  { id: 'manager', name: 'Marketing Manager', description: 'Can manage assets and view all analytics', permissions: ['gen_write', 'gen_read', 'kb_write', 'kb_read', 'dia_view', 'ana_view'] },
-  { id: 'writer', name: 'Copywriter', description: 'Content generation focus', permissions: ['gen_write', 'gen_read', 'kb_read', 'ana_view'] },
+export const GENERATION_KPIS = [
+  { label: 'Token消耗', value: '1.2M', trend: '+12%', iconType: 'coins' },
+  { label: '预估成本', value: '$240', trend: '+8%', iconType: 'wallet' },
+  { label: '生成条数', value: '15.4k', trend: '+25%', iconType: 'message' },
+  { label: '平均生成速度', value: '2.8s', trend: '-10%', iconType: 'zap' }
+];
+
+export const DIAGNOSIS_CHANNEL_DATA: DiagnosisChannelData[] = [
+  { channel: '企微 (WeCom)', generated: 12500, used: 8900, clickRate: '5.2%', conversionRate: '3.1%', trend: '+5.2%' },
+  { channel: '小红书 (RedBook)', generated: 4500, used: 4100, clickRate: '8.5%', conversionRate: '1.8%', trend: '+12.4%' },
+  { channel: '短信 (SMS)', generated: 20000, used: 19500, clickRate: '1.2%', conversionRate: '0.4%', trend: '-2.1%' }
+];
+
+export const MOCK_FAQS: FAQItem[] = [
+  { id: 'q1', question: '玻色因面霜适合什么肤质？', answer: '适合所有肤质，特别是干皮和混干皮，敏感肌也适用。', frequency: 1240, lastUpdated: '2023-11-01' },
+  { id: 'q2', question: '发货时效是多久？', answer: '正常情况下48小时内发货，大促期间72小时内。', frequency: 890, lastUpdated: '2023-10-20' }
+];
+
+export const MODEL_HEALTH_METRICS: ModelHealthMetric[] = [
+  { name: 'Gemini 3 Pro', status: 'Healthy', latency: '850ms', errorRate: '0.01%' },
+  { name: 'Gemini 2.5 Flash', status: 'Healthy', latency: '240ms', errorRate: '0.00%' },
+  { name: 'Veo Video', status: 'Degraded', latency: '15s', errorRate: '2.5%' }
 ];
 
 export const MOCK_MANAGED_USERS: ManagedUser[] = [
-  { id: 'u1', name: 'Jane Doe', email: 'jane.doe@loreal.com', roleId: 'admin', status: 'active', lastLogin: 'Just now', avatar: 'JD' },
-  { id: 'u2', name: 'John Smith', email: 'john.smith@loreal.com', roleId: 'manager', status: 'active', lastLogin: '2 hours ago', avatar: 'JS' },
-  { id: 'u3', name: 'Sarah Lee', email: 'sarah.lee@loreal.com', roleId: 'writer', status: 'inactive', lastLogin: '3 days ago', avatar: 'SL' },
-  { id: 'u4', name: 'David Kim', email: 'david.kim@loreal.com', roleId: 'writer', status: 'active', lastLogin: '1 day ago', avatar: 'DK' },
+  { id: 'u1', name: 'Alice Chen', email: 'alice.chen@loreal.com', roleId: 'admin', status: 'active', lastLogin: '2 mins ago', avatar: 'AC' },
+  { id: 'u2', name: 'Bob Smith', email: 'bob.smith@loreal.com', roleId: 'editor', status: 'active', lastLogin: '1 day ago', avatar: 'BS' },
+  { id: 'u3', name: 'Carol Wu', email: 'carol.wu@loreal.com', roleId: 'viewer', status: 'inactive', lastLogin: '2 weeks ago', avatar: 'CW' }
+];
+
+export const MOCK_ROLES: Role[] = [
+  { id: 'admin', name: 'Administrator', description: 'Full access to all modules and settings.', permissions: ['all'] },
+  { id: 'editor', name: 'Content Editor', description: 'Can generate content and manage knowledge base.', permissions: ['gen_create', 'kb_read', 'kb_write'] },
+  { id: 'viewer', name: 'Viewer', description: 'Read-only access to reports.', permissions: ['report_read'] }
+];
+
+export const ALL_PERMISSIONS: PermissionNode[] = [
+  { id: 'gen_create', label: 'Create Content', category: 'Generation' },
+  { id: 'gen_review', label: 'Review Content', category: 'Generation' },
+  { id: 'kb_read', label: 'View Knowledge Base', category: 'Knowledge' },
+  { id: 'kb_write', label: 'Edit Knowledge Base', category: 'Knowledge' },
+  { id: 'report_read', label: 'View Reports', category: 'Analytics' },
+  { id: 'user_manage', label: 'Manage Users', category: 'System' }
 ];

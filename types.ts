@@ -8,6 +8,48 @@ export interface User {
   avatar: string;
 }
 
+// Generation Memory Types
+export interface MemoryContext {
+  contextual: {
+    timeNode: string; // e.g., "Morning", "Pre-event", "Birthday"
+    specialNeeds: string; // e.g., "Preparing for wedding", "Pregnant"
+    purchaseHistory: string; // e.g., "Bought Revitalift Serum last month"
+    appointments: string; // e.g., "Facial booked for next Tuesday"
+  };
+  emotional: {
+    communicationPref: string; // e.g., "Direct", "Chatty", "Needs reassurance"
+    sensitiveTopics: string; // e.g., "Price sensitivity", "Allergy fears"
+    successHistory: string; // e.g., "Liked the Vitamin C serum recommendation"
+  };
+}
+
+// Knowledge Types
+export interface FileItem {
+  id: string;
+  name: string;
+  type: 'folder' | 'pdf' | 'docx' | 'img';
+  size?: string;
+  date: string;
+}
+
+export interface ServiceRecord {
+  id: string;
+  customerName: string;
+  date: string;
+  type: string; // e.g., Consultation, After-sales
+  summary: string;
+  status: 'Completed' | 'Pending';
+}
+
+export interface ChatRecord {
+  id: string;
+  customerName: string;
+  date: string;
+  topic: string;
+  snippet: string;
+  channel: 'WeCom' | 'Tmall';
+}
+
 // Management Types
 export interface Role {
   id: string;
@@ -88,15 +130,35 @@ export interface TrendCategory {
 }
 
 // Diagnosis Types
-export interface DiagnosisMetric {
+export interface DiagnosisKPI {
+  id: string;
   label: string;
-  value: string | number;
-  change: number; // percentage
-  trend: 'up' | 'down' | 'neutral';
+  value: string;
+  trend: string; // "+2.3% vs Last Week"
+  trendDirection: 'up' | 'down';
+  iconType: 'click' | 'conversion' | 'like' | 'time' | 'coins' | 'wallet' | 'message' | 'zap';
 }
 
-export interface ChartDataPoint {
-  label: string;
-  valueA: number; // e.g., WeCom
-  valueB: number; // e.g., RedBook
+export interface DiagnosisChannelData {
+  channel: string;
+  generated: number;
+  used: number;
+  clickRate: string;
+  conversionRate: string;
+  trend: string;
+}
+
+export interface FAQItem {
+  id: string;
+  question: string;
+  answer: string;
+  frequency: number;
+  lastUpdated: string;
+}
+
+export interface ModelHealthMetric {
+  name: string;
+  status: 'Healthy' | 'Degraded' | 'Down';
+  latency: string;
+  errorRate: string;
 }

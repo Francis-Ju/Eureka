@@ -8,7 +8,7 @@ import { GenerationView } from './components/GenerationView';
 import { KnowledgeView } from './components/KnowledgeView';
 import { AnalysisView } from './components/AnalysisView';
 import { DiagnosisView } from './components/DiagnosisView';
-import { ManagementView } from './components/ManagementView'; // Imported
+import { ManagementView } from './components/ManagementView';
 
 const App = () => {
   // Auth State
@@ -26,7 +26,7 @@ const App = () => {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-eureka-dark text-slate-200">
-      <Sidebar lang={lang} activeModule={module} onNavigate={setModule} />
+      <Sidebar lang={lang} activeModule={module} onNavigate={setModule} user={user} />
 
       <div className="flex-1 flex flex-col min-w-0">
         <header className="h-16 bg-eureka-dark border-b border-eureka-border flex items-center justify-between px-6 shrink-0">
@@ -48,7 +48,7 @@ const App = () => {
         </header>
         <main className="flex-1 overflow-hidden relative">
           {module === 'generation' && <GenerationView lang={lang} audienceData={audienceData} prefilledMimicry={mimicry} setPrefilledMimicry={setMimicry} currentUser={user} />}
-          {module === 'knowledge' && <KnowledgeView audienceData={audienceData} />}
+          {module === 'knowledge' && <KnowledgeView audienceData={audienceData} setAudienceData={setAudienceData} />}
           {module === 'analysis' && <AnalysisView onUseTrend={(t) => { setMimicry(t); setModule('generation'); }} />}
           {module === 'diagnosis' && <DiagnosisView />}
           {module === 'management' && <ManagementView tenant={user.brand} />}
